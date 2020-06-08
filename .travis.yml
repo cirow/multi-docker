@@ -20,3 +20,15 @@ after_success:
   - docker push cirow/multi-nginx
   - docker push cirow/multi-server
   - docker push cirow/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "sa-east-1"
+  app: "complex-docker"
+  env: "ComplexDocker-env"
+  bucket_name: "elasticbeanstalk-sa-east-1-703158050324"
+  bucket_path: "complex-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ID
+  secret_access_key: $AWS_SECRET
