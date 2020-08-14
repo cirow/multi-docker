@@ -1,4 +1,6 @@
 sudo: required
+language: generic
+
 services:
   - docker
 
@@ -6,7 +8,7 @@ before_install:
   - docker build -t cirow/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true cirow/react-test npm test
+  - docker run cirow/react-test npm test -- --coverage
 
 after_success:
   - docker build -t cirow/multi-client ./client
@@ -23,12 +25,12 @@ after_success:
 
 deploy:
   provider: elasticbeanstalk
-  region: "sa-east-1"
-  app: "complex-docker"
-  env: "ComplexDocker-env"
-  bucket_name: "elasticbeanstalk-sa-east-1-703158050324"
-  bucket_path: "complex-docker"
+  region: us-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-west-1-306476627547
+  bucket_path: docker-multi
   on:
     branch: master
-  access_key_id: $AWS_ID
-  secret_access_key: $AWS_SECRET
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
